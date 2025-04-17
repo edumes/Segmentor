@@ -1,50 +1,53 @@
-# main_app.py
-
 import tkinter as tk
 from tkinter import filedialog
 from moviepy.editor import VideoFileClip
 import cv2
 from PIL import Image, ImageTk
-from video_utils import extract_segments  # Importa a função do outro módulo
+from video_utils import extract_segments
 
 class VideoSegmenterApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Video Segmenter")
-        self.root.geometry("800x600")
+        
+        # Configure dark theme colors
+        self.root.configure(bg='#2b2b2b')
+        self.style = {
+            'bg': '#2b2b2b',
+            'fg': '#ffffff',
+            'activebackground': '#3b3b3b',
+            'activeforeground': '#ffffff',
+            'highlightbackground': '#2b2b2b',
+            'highlightcolor': '#4b4b4b'
+        }
+
+        self.root.state('zoomed')
         
         self.file_path = None
         self.clip = None
-        self.selected_times_default = []  # Times selected for default format
-        self.selected_times_vertical = []  # Times selected for vertical format
+        self.selected_times_default = []
+        self.selected_times_vertical = []
         self.preview_images = []
 
-        # Botão para upload de vídeo
-        self.upload_btn = tk.Button(root, text="Upload Video", command=self.upload_video)
+        self.upload_btn = tk.Button(root, text="Upload Video", command=self.upload_video, **self.style)
         self.upload_btn.pack()
 
-        # Seção de pré-visualização de quadros
-        self.preview_label = tk.Label(root, text="Preview Frames")
+        self.preview_label = tk.Label(root, text="Preview Frames", **self.style)
         self.preview_label.pack()
 
-        # Canvas para quadros de visualização com scrollbar
-        self.frame_canvas = tk.Canvas(root)
+        self.frame_canvas = tk.Canvas(root, bg=self.style['bg'])
         self.frame_canvas.pack(fill=tk.BOTH, expand=True)
 
-        # Frame dentro do canvas para layout de grade
-        self.frame_grid = tk.Frame(self.frame_canvas)
+        self.frame_grid = tk.Frame(self.frame_canvas, bg=self.style['bg'])
         self.frame_canvas.create_window((0, 0), window=self.frame_grid, anchor="nw")
 
-        # Configurar scrollbar vertical
-        self.scrollbar = tk.Scrollbar(root, orient="vertical", command=self.frame_canvas.yview)
+        self.scrollbar = tk.Scrollbar(root, orient="vertical", command=self.frame_canvas.yview, bg=self.style['bg'])
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.frame_canvas.config(yscrollcommand=self.scrollbar.set)
 
-        # Vincular funcionalidade de rolagem para o mouse
         self.frame_canvas.bind_all("<MouseWheel>", self._on_mousewheel)
 
-        # Botão de extração
-        self.extract_btn = tk.Button(root, text="Extract Segments", command=self.call_extract_segments, state=tk.DISABLED)
+        self.extract_btn = tk.Button(root, text="Extract Segments", command=self.call_extract_segments, state=tk.DISABLED, **self.style)
         self.extract_btn.pack()
 
     def upload_video(self):
@@ -55,7 +58,6 @@ class VideoSegmenterApp:
             self.extract_btn.config(state=tk.NORMAL)
 
     def display_preview_frames(self):
-        # Limpar quadros anteriores e redefinir tempos selecionados
         self.selected_times_default.clear()
         self.selected_times_vertical.clear()
         for widget in self.frame_grid.winfo_children():
@@ -66,8 +68,7 @@ class VideoSegmenterApp:
         fps = video_cap.get(cv2.CAP_PROP_FPS)
         frames_to_capture = range(0, int(video_cap.get(cv2.CAP_PROP_FRAME_COUNT)), int(fps * 60))
 
-        # Definir colunas para o layout de grade
-        columns = 4  # Ajuste para o número desejado de colunas
+        columns = 4
 
         for i, frame_number in enumerate(frames_to_capture):
             video_cap.set(cv2.CAP_PROP_POS_FRAMES, frame_number)
@@ -75,31 +76,25 @@ class VideoSegmenterApp:
             if not success:
                 break
 
-            # Converter quadro para formato adequado para exibição no tkinter
             img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-            img = img.resize((350, 250))  # Tamanho maior da imagem
+            img = img.resize((350, 250))
             img_tk = ImageTk.PhotoImage(img)
-            self.preview_images.append(img_tk)  # Manter referência para evitar coleta de lixo
+            self.preview_images.append(img_tk)
 
-            # Criar um frame para cada preview com seus checkboxes
             preview_frame = tk.Frame(self.frame_grid)
             preview_frame.grid(row=i // columns, column=i % columns, padx=5, pady=5)
 
-            # Label com a imagem
             img_label = tk.Label(preview_frame, image=img_tk)
             img_label.pack()
 
-            # Frame para os checkboxes
             checkbox_frame = tk.Frame(preview_frame)
             checkbox_frame.pack()
 
-            # Checkbox para formato default
             default_var = tk.BooleanVar()
             default_cb = tk.Checkbutton(checkbox_frame, text="Default", variable=default_var,
                                       command=lambda t=i: self.toggle_time_selection(t, "default"))
             default_cb.pack(side=tk.LEFT, padx=2)
 
-            # Checkbox para formato vertical
             vertical_var = tk.BooleanVar()
             vertical_cb = tk.Checkbutton(checkbox_frame, text="Vertical", variable=vertical_var,
                                        command=lambda t=i: self.toggle_time_selection(t, "vertical"))
@@ -107,7 +102,6 @@ class VideoSegmenterApp:
 
         video_cap.release()
 
-        # Atualizar a área de rolagem
         self.frame_grid.update_idletasks()
         self.frame_canvas.config(scrollregion=self.frame_canvas.bbox("all"))
 
@@ -117,7 +111,7 @@ class VideoSegmenterApp:
                 self.selected_times_default.remove(minute)
             else:
                 self.selected_times_default.append(minute)
-        else:  # vertical
+        else:
             if minute in self.selected_times_vertical:
                 self.selected_times_vertical.remove(minute)
             else:
