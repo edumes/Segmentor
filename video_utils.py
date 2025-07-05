@@ -26,7 +26,7 @@ def extract_segment(input_video, output_path, start_time, end_time, vertical=Fal
 
         ffmpeg_cmd.extend([
             '-c:a', 'aac',
-            '-b:a', '128k',
+            '-b:a', '256k',
             '-y',
             output_path
         ])
@@ -35,7 +35,7 @@ def extract_segment(input_video, output_path, start_time, end_time, vertical=Fal
         return True
 
     except subprocess.CalledProcessError as e:
-        print(f"Erro FFmpeg: {e}")
+        print(f"Error on FFmpeg: {e}")
         return False
 
 def extract_segments(input_video, selected_times_default, selected_times_vertical):
@@ -53,16 +53,16 @@ def extract_segments(input_video, selected_times_default, selected_times_vertica
             if minute in selected_times_default:
                 output_path = os.path.join(output_folder, f"{video_name}_segment_{minute+1}_default.mp4")
                 if not extract_segment(input_video, output_path, start_time, end_time):
-                    raise RuntimeError(f"Falha no segmento default {minute+1}")
+                    raise RuntimeError(f"Failed on default segment {minute+1}")
 
             if minute in selected_times_vertical:
                 output_path = os.path.join(output_folder, f"{video_name}_segment_{minute+1}_vertical.mp4")
                 if not extract_segment(input_video, output_path, start_time, end_time, vertical=True):
-                    raise RuntimeError(f"Falha no segmento vertical {minute+1}")
+                    raise RuntimeError(f"Failed on vertical segment {minute+1}")
 
-        messagebox.showinfo("Sucesso", f"Segmentos salvos na pasta: {output_folder}")
+        messagebox.showinfo("Success", f"Segments saved in folder: {output_folder}")
         return True
 
     except Exception as e:
-        messagebox.showerror("Erro", f"Erro ao processar vídeo: {str(e)}")
+        messagebox.showerror("Error", f"Error processing video: {str(e)}")
         return False
