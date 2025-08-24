@@ -1,0 +1,22 @@
+# Dependências base para todas as plataformas
+PyQt6>=6.6.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# Dependências específicas do macOS (instaladas condicionalmente)
+# pyobjc-framework-Cocoa>=10.0; sys_platform == "darwin"
+# pyobjc-framework-AVFoundation>=10.0; sys_platform == "darwin"
+# pyobjc-framework-CoreMedia>=10.0; sys_platform == "darwin"
+
+# Dependências específicas do Windows (instaladas condicionalmente)
+# pywin32>=306; sys_platform == "win32"
+# winsound>=1.0; sys_platform == "win32"
+
+# Dependências de desenvolvimento e teste
+pytest>=7.4.0
+pytest-qt>=4.2.0
+pytest-cov>=4.1.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
