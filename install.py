@@ -269,7 +269,7 @@ class SegmentorInstaller:
                 batch_content = '''@echo off
 cd /d "%~dp0"
 call venv\\Scripts\\activate
-python main_optimized.py
+python main.py
 pause
 '''
                 
@@ -283,7 +283,7 @@ pause
                 shell_content = '''#!/bin/bash
 cd "$(dirname "$0")"
 source venv/bin/activate
-python main_optimized.py
+python main.py
 '''
                 
                 with open('run_segmentor.sh', 'w') as f:
@@ -360,7 +360,7 @@ except ImportError as e:
         else:
             print("   1. Execute: ./run_segmentor.sh")
             print("   2. Ou ative o ambiente: source venv/bin/activate")
-            print("   3. E execute: python main_optimized.py")
+            print("   3. E execute: python main.py")
         
         print()
         print("🔧 Recursos específicos da plataforma:")

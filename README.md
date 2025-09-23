@@ -501,27 +501,6 @@ Se os problemas persistirem:
    - Logs de erro completos
    - Configuração do sistema
 
-## 🤝 Contribuição
-
-### Configuração do Ambiente de Desenvolvimento
-
-```bash
-# 1. Fork e clone o repositório
-git clone https://github.com/seu-usuario/segmentor.git
-cd segmentor
-
-# 2. Instalar dependências de desenvolvimento
-python install.py
-# Responder 'y' quando perguntado sobre pacotes de desenvolvimento
-
-# 3. Instalar hooks de pre-commit
-pip install pre-commit
-pre-commit install
-
-# 4. Executar testes
-python run_tests.py
-```
-
 ### Padrões de Código
 
 ```bash
@@ -585,7 +564,7 @@ Este projeto está licenciado sob a [MIT License](LICENSE).
 ```
 MIT License
 
-Copyright (c) 2024 Segmentor
+Copyright (c) 2025 Segmentor
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
