@@ -9,7 +9,7 @@
 [![PyQt6](https://img.shields.io/badge/PyQt6-GUI-green?logo=qt&logoColor=white)]()
 [![FFmpeg](https://img.shields.io/badge/FFmpeg-Video%20Processing-red?logo=ffmpeg&logoColor=white)]()
 
-https://github.com/user-attachments/assets/8333a9a7-c973-4c44-bcd8-98272a3246a4
+https://github.com/user-attachments/assets/0564fe66-2123-4e4f-a9ee-2e4cf0051190
 
 ## 📋 Índice
 
